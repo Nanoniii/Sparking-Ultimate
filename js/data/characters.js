@@ -296,7 +296,7 @@ const CHARACTERS = {
     displayName: 'Zarbon Transformado',
     description: 'A forma monstruosa de Zarbon. Força bruta sem igual.',
     spritePath: 'assets/sprites/MonsterZarbon/',
-    sprites: { Idle:'Idle.png', Punch:'Punch.png', Kick:'Kick.png', Block:'Block.png', Charge:'Charge.png', Damage:'Damage.png', Dead:'Dead.png', Fire:'Fire.png', WalkLeft:'WalkLeft.png', WalkRight:'WalkRight.png' },
+    sprites: { Idle:'ZarbonIdle.png', Punch:'Punch.png', Kick:'Kick.png', Block:'Block.png', Charge:'Charge.png', Damage:'Damage.png', Dead:'Dead.png', Fire:'Fire.png', WalkLeft:'WalkLeft.png', WalkRight:'WalkRight.png' },
     color: '#228866',
     charClass: 'grappler', auraColor: '#00aa55',
     stats: { hp: 1350, power: 110, speed: 65, defense: 95 },
