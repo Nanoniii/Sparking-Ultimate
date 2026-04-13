@@ -1,0 +1,153 @@
+#screen-battle { background:#000; position:relative; width:100%; height:100%; }
+.arena-wrapper { position:absolute; inset:0; overflow:hidden; width:100%; height:100%; }
+#battleCanvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.vfx-layer { position:absolute; inset:0; pointer-events:none; z-index:20; }
+.ki-blast { position:absolute; border-radius:50%; pointer-events:none; }
+.ki-blast-p1 { background:radial-gradient(circle,#fff 0%,var(--blue-ki) 50%,transparent 100%); box-shadow:0 0 12px var(--blue-ki),0 0 24px var(--blue-ki); }
+.ki-blast-p2 { background:radial-gradient(circle,#fff 0%,#ff4400 50%,transparent 100%); box-shadow:0 0 12px #ff4400,0 0 24px #ff4400; }
+.kamehameha { position:absolute; border-radius:4px; background:linear-gradient(90deg,transparent,var(--blue-ki),#fff,var(--blue-ki),transparent); box-shadow:0 0 20px var(--blue-ki),0 0 40px var(--blue-ki); pointer-events:none; }
+.galick-ho { position:absolute; border-radius:4px; background:linear-gradient(90deg,transparent,#aa00ff,#fff,#aa00ff,transparent); box-shadow:0 0 20px #aa00ff,0 0 40px #aa00ff; pointer-events:none; }
+.hit-flash { position:absolute; inset:0; pointer-events:none; z-index:50; animation:hitFlashAnim 0.12s ease-out forwards; }
+@keyframes hitFlashAnim { 0%{background:rgba(255,255,255,0.35)} 100%{background:transparent} }
+.screen-shake { animation:shakeAnim 0.25s ease-out; }
+@keyframes shakeAnim { 0%,100%{transform:translate(0,0)} 20%{transform:translate(-6px,3px)} 40%{transform:translate(6px,-3px)} 60%{transform:translate(-4px,2px)} 80%{transform:translate(4px,-2px)} }
+.charge-aura { position:absolute; border-radius:50%; pointer-events:none; animation:auraFlicker 0.2s ease-in-out infinite; }
+.charge-aura-p1 { background:radial-gradient(circle,rgba(0,207,255,0.5) 0%,transparent 70%); box-shadow:0 0 30px var(--blue-ki); }
+.charge-aura-p2 { background:radial-gradient(circle,rgba(255,100,0,0.5) 0%,transparent 70%); box-shadow:0 0 30px var(--orange); }
+@keyframes auraFlicker { 0%,100%{opacity:0.8;transform:scale(1)} 50%{opacity:1;transform:scale(1.08)} }
+.clash-layer { position:absolute; inset:0; z-index:200; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; }
+.clash-inner { text-align:center; }
+.clash-text { font-family:var(--font-title); font-size:clamp(3rem,8vw,6rem); font-weight:900; color:var(--gold); text-shadow:0 0 20px var(--orange),0 0 60px var(--orange2),4px 4px 0 rgba(0,0,0,0.8); animation:clashPop 0.5s ease-out; }
+@keyframes clashPop { 0%{transform:scale(0.3) rotate(-5deg);opacity:0} 60%{transform:scale(1.15) rotate(2deg)} 100%{transform:scale(1) rotate(0);opacity:1} }
+.clash-bar-wrap { display:flex; align-items:center; width:500px; height:20px; background:rgba(0,0,0,0.5); border:2px solid var(--gold); margin:20px auto; overflow:hidden; }
+.clash-bar-p1 { height:100%; background:linear-gradient(90deg,var(--blue-ki),#fff); transition:width 0.1s; }
+.clash-bar-center { width:4px; height:100%; background:var(--gold); flex-shrink:0; }
+.clash-bar-p2 { height:100%; background:linear-gradient(90deg,#fff,var(--orange)); transition:width 0.1s; }
+.clash-hint { font-family:var(--font-title); font-size:0.7rem; letter-spacing:0.3em; color:rgba(255,255,255,0.7); animation:blinkPress 0.6s ease-in-out infinite; }
+.round-announce { position:absolute; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.round-announce span { font-family:var(--font-title); font-size:clamp(2rem,6vw,4.5rem); font-weight:900; color:#fff; text-shadow:0 0 30px var(--orange),4px 4px 0 rgba(0,0,0,0.8); animation:announceSlide 0.5s ease-out,announceFade 0.5s ease-in 1.5s forwards; }
+@keyframes announceSlide { 0%{transform:translateY(-40px) scale(0.7);opacity:0} 100%{transform:translateY(0) scale(1);opacity:1} }
+@keyframes announceFade { to{opacity:0} }
+.fight-announce { position:absolute; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; pointer-events:none; font-family:var(--font-title); font-size:clamp(3rem,9vw,7rem); font-weight:900; color:var(--orange); text-shadow:0 0 40px var(--orange2),5px 5px 0 rgba(0,0,0,0.8); animation:fightBurst 0.4s ease-out,announceFade 0.3s ease-in 0.9s forwards; }
+@keyframes fightBurst { 0%{transform:scale(2.5);opacity:0} 100%{transform:scale(1);opacity:1} }
+.ko-announce { position:absolute; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; pointer-events:none; font-family:var(--font-title); font-size:clamp(4rem,12vw,9rem); font-weight:900; color:#fff; text-shadow:0 0 20px #ff0000,0 0 60px #ff0000,6px 6px 0 rgba(0,0,0,0.9); animation:koBurst 0.5s ease-out; }
+@keyframes koBurst { 0%{transform:scale(0.5) rotate(-10deg);opacity:0;letter-spacing:-0.1em} 70%{transform:scale(1.1) rotate(2deg);letter-spacing:0.15em} 100%{transform:scale(1) rotate(0);opacity:1} }
+.result-screen { position:absolute; inset:0; z-index:400; background:rgba(0,0,0,0.85); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+.result-winner-label { font-family:var(--font-title); font-size:0.8rem; letter-spacing:0.4em; color:rgba(255,255,255,0.5); }
+.result-winner-name { font-family:var(--font-title); font-size:clamp(2rem,6vw,4rem); font-weight:900; color:var(--gold); text-shadow:0 0 30px var(--orange); animation:resultPop 0.6s ease-out; }
+.result-sub { font-size:0.8rem; color:rgba(240,232,208,0.5); font-style:italic; }
+@keyframes resultPop { 0%{transform:scale(0.5);opacity:0} 60%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+.result-actions { display:flex; gap:16px; margin-top:16px; }
+.btn-result { padding:12px 28px; background:var(--panel); border:1px solid var(--border); color:var(--text); font-family:var(--font-title); font-size:0.8rem; cursor:pointer; transition:all 0.2s; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%); }
+.btn-result:hover { background:rgba(255,120,0,0.2); border-color:var(--orange); color:var(--gold); }
+.pause-menu { position:absolute; inset:0; z-index:500; background:rgba(0,0,0,0.8); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; }
+.pause-title { font-family:var(--font-title); font-size:2rem; color:var(--gold); text-shadow:0 0 15px var(--orange); margin-bottom:16px; letter-spacing:0.3em; }
+.pause-btn { width:220px; padding:12px; background:var(--panel); border:1px solid var(--border); color:var(--text); font-family:var(--font-ui); font-size:0.9rem; font-weight:600; cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%); }
+.pause-btn:hover { background:rgba(255,120,0,0.2); border-color:var(--orange); color:var(--gold); }
+.controls-overlay { position:absolute; bottom:20px; right:16px; z-index:90; background:rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.08); padding:10px 14px; font-size:0.62rem; color:rgba(240,232,208,0.4); line-height:1.8; pointer-events:none; }
+.controls-overlay b { color:rgba(255,200,50,0.7); }
+
+/* ── Tag Team Bench HUD ─────────────────────────────── */
+.bench-hud {
+  position: absolute;
+  bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 20;
+  pointer-events: none;
+}
+.bench-hud-p1 { left: 12px; }
+.bench-hud-p2 { right: 12px; }
+
+.bench-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bench-slot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 6px;
+  padding: 2px 6px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.bench-hp-bar {
+  width: 48px;
+  height: 5px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bench-hp-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.tag-cooldown-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.58rem;
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 4px;
+  padding: 2px 6px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* TAG IN flash animation */
+@keyframes fadeup {
+  0%   { opacity:1; transform: translateX(-50%) translateY(0); }
+  100% { opacity:0; transform: translateX(-50%) translateY(-40px); }
+}
+
+/* vs-section tag size */
+#vsTagSizeSection .vs-tagsize-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+#vsTagSizeSection .vs-tagsize-btn.active,
+#vsTagSizeSection .vs-tagsize-btn:hover {
+  background: rgba(170,68,255,0.35);
+  border-color: #aa44ff;
+}
+
+/* Class badge on char select */
+.cs-class-badge {
+  font-size: 0.55rem;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  display: inline-block;
+}
+.cs-class-badge.rusher    { background: #cc2200; color:#fff; }
+.cs-class-badge.zuner     { background: #0044cc; color:#fff; }
+.cs-class-badge.grappler  { background: #664400; color:#fff; }
+.cs-class-badge.all-rounder { background: #226633; color:#fff; }
+
+/* ── Tag team multi-select card highlights ── */
+.cs-char-card.tag-p1 {
+  outline: 2px solid #00cfff;
+  box-shadow: 0 0 8px #00cfff88;
+}
+.cs-char-card.tag-p2 {
+  outline: 2px solid #ff6400;
+  box-shadow: 0 0 8px #ff640088;
+}

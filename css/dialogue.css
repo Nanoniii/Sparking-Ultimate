@@ -1,0 +1,50 @@
+.dialogue-box { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); width:min(700px,90vw); z-index:150; background:var(--panel); border:1px solid var(--border); border-bottom:2px solid var(--orange); display:flex; align-items:flex-start; gap:16px; padding:16px 20px; clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px)); animation:dialogueIn 0.3s ease-out; }
+@keyframes dialogueIn { 0%{transform:translateX(-50%) translateY(20px);opacity:0} 100%{transform:translateX(-50%) translateY(0);opacity:1} }
+.dialogue-portrait { width:64px; height:64px; border:1px solid var(--border); background:rgba(255,255,255,0.05); flex-shrink:0; overflow:hidden; image-rendering:pixelated; display:flex; align-items:center; justify-content:center; font-size:2rem; }
+.dialogue-portrait img { width:100%; height:100%; object-fit:cover; }
+.dialogue-content { flex:1; }
+.dialogue-speaker { font-family:var(--font-title); font-size:0.7rem; letter-spacing:0.15em; color:var(--gold); margin-bottom:4px; }
+.dialogue-text { font-size:0.88rem; line-height:1.5; color:var(--text); }
+.dialogue-continue { font-size:0.7rem; color:rgba(255,255,255,0.4); margin-top:8px; text-align:right; animation:blinkPress 1s ease-in-out infinite; }
+.narrator-box { position:absolute; top:70px; left:50%; transform:translateX(-50%); width:min(600px,85vw); z-index:150; background:rgba(0,0,0,0.75); border-left:3px solid var(--gold); padding:12px 20px; animation:narratorIn 0.4s ease-out; }
+@keyframes narratorIn { 0%{opacity:0;transform:translateX(-50%) translateY(-10px)} 100%{opacity:1;transform:translateX(-50%) translateY(0)} }
+.narrator-text { font-family:var(--font-jp); font-size:0.82rem; color:rgba(240,232,208,0.85); font-style:italic; line-height:1.6; }
+
+/* CHARACTER SELECT */
+#screen-charselect { flex-direction:column; }
+.cs-header { position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:16px 32px 12px; border-bottom:1px solid var(--border); background:rgba(0,0,0,0.5); }
+#cs-title { font-family:var(--font-title); font-size:0.8rem; letter-spacing:0.25em; color:var(--gold); }
+#cs-player-indicator { font-family:var(--font-title); font-size:0.7rem; letter-spacing:0.2em; color:var(--blue-ki); animation:blinkPress 1s ease-in-out infinite; }
+.cs-layout { position:relative; z-index:2; display:flex; flex:1; overflow:hidden; }
+.cs-preview { width:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; gap:12px; background:rgba(0,0,0,0.4); border-right:1px solid var(--border); }
+.cs-preview-p2 { border-right:none; border-left:1px solid var(--border); }
+.cs-char-name { font-family:var(--font-title); font-size:0.75rem; letter-spacing:0.15em; color:var(--gold); text-align:center; }
+.cs-char-sprite { width:120px; height:140px; image-rendering:pixelated; background:rgba(255,255,255,0.03); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.cs-char-sprite img { width:100%; height:100%; object-fit:contain; }
+.cs-sprite-placeholder { font-size:3rem; opacity:0.2; }
+.cs-char-stats { font-size:0.7rem; color:rgba(240,232,208,0.6); text-align:center; line-height:2; width:100%; }
+.stat-bar-row { display:flex; align-items:center; gap:6px; margin-bottom:3px; }
+.stat-label { font-size:0.6rem; color:rgba(240,232,208,0.5); width:40px; text-align:left; }
+.stat-bar { flex:1; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+.stat-bar-fill { height:100%; background:linear-gradient(90deg,var(--orange),var(--gold)); border-radius:2px; }
+.cs-char-desc { font-size:0.65rem; color:rgba(240,232,208,0.45); text-align:center; font-style:italic; line-height:1.4; margin-top:4px; }
+.cs-grid { flex:1; display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:8px; padding:20px; align-content:start; overflow-y:auto; }
+.cs-char-card { background:var(--panel); border:2px solid transparent; cursor:pointer; transition:all 0.15s; text-align:center; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:4px; clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%); }
+.cs-char-card:hover { border-color:var(--orange); background:rgba(255,120,0,0.15); transform:scale(1.05); }
+.cs-char-card.selected-p1 { border-color:var(--blue-ki); background:rgba(0,207,255,0.15); }
+.cs-char-card.selected-p2 { border-color:var(--orange); background:rgba(255,120,0,0.15); }
+.cs-char-card.locked { opacity:0.4; cursor:not-allowed; filter:grayscale(0.8); }
+.cs-char-card.locked:hover { transform:none; border-color:transparent; background:var(--panel); }
+.cs-card-icon { width:56px; height:64px; image-rendering:pixelated; overflow:hidden; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.03); }
+.cs-card-icon img { width:100%; height:100%; object-fit:contain; }
+.cs-card-icon-placeholder { font-size:1.8rem; opacity:0.5; }
+.cs-card-name { font-size:0.58rem; color:var(--text); letter-spacing:0.03em; line-height:1.2; }
+.cs-card-lock { font-size:0.9rem; }
+.cs-footer { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; padding:12px 32px; background:rgba(0,0,0,0.6); border-top:1px solid var(--border); }
+.cs-stage-select { display:flex; align-items:center; gap:10px; font-size:0.8rem; color:rgba(240,232,208,0.6); }
+.stage-prev, .stage-next { background:transparent; border:1px solid var(--border); color:var(--text); padding:4px 10px; cursor:pointer; font-size:0.8rem; transition:all 0.2s; }
+.stage-prev:hover, .stage-next:hover { border-color:var(--orange); color:var(--orange); }
+.cs-controls-hint { display:flex; gap:16px; font-size:0.65rem; color:rgba(240,232,208,0.4); }
+.btn-start-fight { padding:12px 28px; background:var(--orange); border:none; color:#000; font-family:var(--font-title); font-size:0.9rem; font-weight:700; cursor:pointer; transition:all 0.2s; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%); }
+.btn-start-fight:hover { background:var(--gold); box-shadow:var(--shadow); }
+.btn-start-fight:disabled { background:rgba(255,120,0,0.3); color:rgba(0,0,0,0.5); cursor:not-allowed; }

@@ -1,0 +1,40 @@
+.hud-top { position:absolute; top:0; left:0; right:0; z-index:100; display:flex; align-items:flex-start; padding:10px 16px; pointer-events:none; background:linear-gradient(to bottom,rgba(0,0,0,0.8) 0%,transparent 100%); }
+.hud-player { flex:1; display:flex; flex-direction:column; gap:4px; }
+.hud-p2 { align-items:flex-end; }
+.hud-name { font-family:var(--font-title); font-size:0.7rem; letter-spacing:0.15em; color:var(--gold); text-shadow:0 0 8px var(--orange); }
+.hud-p2 .hud-name { text-align:right; }
+.hud-hp-wrap { display:flex; align-items:center; gap:6px; width:100%; max-width:320px; }
+.hud-p2 .hud-hp-wrap { flex-direction:row-reverse; }
+.hud-hp-bar { flex:1; height:14px; background:#1a0000; border:1px solid rgba(255,255,255,0.2); position:relative; overflow:hidden; border-radius:2px; }
+
+/* ── 3-layer BT3 health bar ── */
+.hp-layer { position:absolute; top:0; bottom:0; }
+/* Vermelho: sempre 100% largura, base fixa */
+.hp-layer-red { left:0; right:0; background:linear-gradient(90deg,#8b0000,#cc2200); }
+.hp-layer-red::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(255,255,255,0.2) 0%,transparent 60%); }
+/* Amarelo: cobre da esquerda, some quando HP cai abaixo de 66% */
+.hp-layer-yellow { left:0; width:100%; background:linear-gradient(90deg,#cc8800,#ffcc00); transition:width 0.15s ease; }
+.hp-layer-yellow::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(255,255,255,0.25) 0%,transparent 60%); }
+/* Verde: cobre da esquerda, some quando HP cai abaixo de 33% */
+.hp-layer-green { left:0; width:100%; background:linear-gradient(90deg,#00aa22,#33ff55); transition:width 0.15s ease; }
+.hp-layer-green::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(255,255,255,0.3) 0%,transparent 60%); }
+/* P2: barras crescem da direita */
+.hp-layer-p2 { left:auto; right:0; }
+
+.hud-hp-num { font-family:var(--font-title); font-size:0.6rem; color:rgba(240,232,208,0.6); min-width:30px; text-align:right; }
+.hud-p2 .hud-hp-num { text-align:left; }
+.hud-ki-wrap { display:flex; align-items:center; gap:6px; width:100%; max-width:260px; }
+.hud-p2 .hud-ki-wrap { flex-direction:row-reverse; }
+.hud-ki-label { font-family:var(--font-title); font-size:0.55rem; letter-spacing:0.2em; color:var(--blue-ki); }
+.hud-ki-bar { flex:1; height:6px; background:rgba(0,0,0,0.6); border:1px solid rgba(0,207,255,0.2); overflow:hidden; }
+.hud-ki-fill { height:100%; width:0%; background:linear-gradient(90deg,#0080ff,var(--blue-ki)); transition:width 0.25s ease; box-shadow:0 0 8px var(--blue-ki); }
+.hud-ki-fill-p2 { float:right; }
+.hud-rounds { display:flex; gap:4px; margin-top:2px; }
+.hud-rounds-p2 { justify-content:flex-end; }
+.hud-round-dot { width:8px; height:8px; border-radius:50%; border:1px solid var(--gold); background:transparent; }
+.hud-round-dot.won { background:var(--gold); box-shadow:0 0 6px var(--gold); }
+.hud-center { width:100px; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.hud-timer { font-family:var(--font-title); font-size:2rem; font-weight:900; color:#fff; text-shadow:0 0 12px rgba(255,255,255,0.5); line-height:1; }
+.hud-timer.low { color:var(--red-hp); animation:timerPanic 0.5s ease-in-out infinite; }
+@keyframes timerPanic { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.hud-round { font-family:var(--font-title); font-size:0.55rem; letter-spacing:0.2em; color:rgba(255,255,255,0.5); }

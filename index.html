@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dragon Ball: Sparking! Ultimate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/hud.css" />
+  <link rel="stylesheet" href="css/menus.css" />
+  <link rel="stylesheet" href="css/battle.css" />
+  <link rel="stylesheet" href="css/dialogue.css" />
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="screen-splash" class="screen active">
+  <div class="splash-bg"></div>
+  <div class="splash-energy"></div>
+  <div class="splash-stars" id="splashStars"></div>
+  <div class="splash-content">
+    <div class="splash-logo">
+      <span class="logo-db">DRAGON BALL</span>
+      <span class="logo-sparking">SPARKING!</span>
+      <span class="logo-ultimate">ULTIMATE</span>
+    </div>
+    <div class="splash-subtitle">Uma Homenagem a Akira Toriyama</div>
+    <div class="splash-press">PRESSIONE QUALQUER TECLA</div>
+  </div>
+  <div class="splash-footer">v6.0 — Saga Saiyajin + Saga Freeza + Saga Androide</div>
+</div>
+
+<!-- MAIN MENU -->
+<div id="screen-mainmenu" class="screen">
+  <div class="menu-bg"></div>
+  <div class="menu-particles" id="menuParticles"></div>
+  <div class="main-menu-layout">
+    <!-- Painel esquerdo: logo + navegação -->
+    <div class="menu-left-panel">
+      <div class="main-menu-logo">
+        <span class="logo-db-sm">DRAGON BALL</span>
+        <span class="logo-sparking-sm">SPARKING! ULTIMATE</span>
+      </div>
+      <nav class="main-nav" id="mainNav">
+        <button class="nav-btn" data-mode="zcanon" data-desc="Reviva a saga Saiyajin em batalhas épicas narradas.">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">Z-CANON</span>
+          <span class="nav-desc">Modo História</span>
+        </button>
+        <button class="nav-btn" data-mode="pvplocal" data-desc="Duelo local entre dois jogadores no mesmo teclado.">
+          <span class="nav-icon">⚔</span>
+          <span class="nav-label">PVP LOCAL</span>
+          <span class="nav-desc">2 Jogadores</span>
+        </button>
+        <button class="nav-btn" data-mode="versus" data-desc="Tag Team vs CPU — monte um time e enfrente a CPU.">
+          <span class="nav-icon">🔀</span>
+          <span class="nav-label">TAG TEAM</span>
+          <span class="nav-desc">Time vs CPU</span>
+        </button>
+        <button class="nav-btn" data-mode="vscpu1v1" data-desc="Escolha seu personagem e enfrente a CPU em 1v1.">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label">1v1 vs CPU</span>
+          <span class="nav-desc">Player vs CPU</span>
+        </button>
+        <button class="nav-btn" data-mode="ztimebreak" data-desc="Explore histórias alternativas — e se as coisas fossem diferentes?">
+          <span class="nav-icon">🌀</span>
+          <span class="nav-label">Z-TIME BREAK</span>
+          <span class="nav-desc">What Ifs</span>
+        </button>
+        <button class="nav-btn" data-mode="training" data-desc="Aprenda os controles ou pratique livremente sem restrições.">
+          <span class="nav-icon">🥋</span>
+          <span class="nav-label">TRAINING</span>
+          <span class="nav-desc">Treino e Tutorial</span>
+        </button>
+        <button class="nav-btn" data-mode="tournament" data-desc="Compete no Torneio Mundial de Artes Marciais.">
+          <span class="nav-icon">🏆</span>
+          <span class="nav-label">WORLD TOURNAMENT</span>
+          <span class="nav-desc">Torneio</span>
+        </button>
+        <button class="nav-btn" data-mode="zparallel" data-desc="Missões especiais, desafios e boss fights exclusivos.">
+          <span class="nav-icon">🌐</span>
+          <span class="nav-label">Z-PARALLEL</span>
+          <span class="nav-desc">Missões e Desafios</span>
+        </button>
+        <button class="nav-btn" data-mode="shop" data-desc="Gaste seu Zeni para desbloquear personagens e trajes.">
+          <span class="nav-icon">🏪</span>
+          <span class="nav-label">LOJA</span>
+          <span class="nav-desc">Personagens e Trajes</span>
+        </button>
+        <button class="nav-btn" data-mode="settings" data-desc="Configurações, música e opção de zerar o jogo.">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">CONFIGURAÇÕES</span>
+          <span class="nav-desc">Opções do Jogo</span>
+        </button>
+      </nav>
+      <div class="menu-zeni-bar">💰 <span id="menuZeniDisplay">0</span> Zeni</div>
+    </div>
+    <!-- Painel direito: arte do personagem decorativa -->
+    <div class="menu-right-panel">
+      <img class="menu-char-art" id="menuCharArt"
+           src="assets/sprites/EarlyGoku/Idle.png"
+           onerror="this.style.display='none'; document.getElementById('menuCharArtFallback').style.display='block'"
+           alt="">
+      <div class="menu-char-art-placeholder" id="menuCharArtFallback" style="display:none">🐉</div>
+      <div class="menu-info-panel" id="menuInfoPanel">
+        <div class="menu-info-text" id="menuInfoText"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARACTER SELECT -->
+<div id="screen-charselect" class="screen">
+  <div class="cs-bg"></div>
+  <div class="cs-header">
+    <button class="back-btn" id="csBackBtn">← VOLTAR</button>
+    <span id="cs-title">SELECIONE SEU PERSONAGEM</span>
+    <span id="cs-player-indicator">JOGADOR 1</span>
+  </div>
+  <div class="cs-layout">
+
+    <!-- Preview P1 (esquerda) -->
+    <div class="cs-preview cs-preview-p1" id="csPreviewP1">
+      <div class="cs-player-tag">1P</div>
+      <div class="cs-char-name" id="csNameP1">—</div>
+      <div class="cs-char-art-wrap">
+        <div class="cs-char-sprite" id="csSpriteP1">
+          <div class="cs-sprite-placeholder">?</div>
+        </div>
+      </div>
+      <button class="cs-art-toggle" id="csToggleP1" title="Arte pixel" style="display:none">👾 PIXEL</button>
+      <div class="cs-char-stats" id="csStatsP1"></div>
+      <div class="cs-costumes" id="csCostumesP1"></div>
+    </div>
+
+    <!-- Grade central -->
+    <div class="cs-grid-wrap">
+      <!-- Faixa de ícones selecionados (P1 top, P2 bottom) -->
+      <div class="cs-icon-strip cs-strip-p1" id="csStripP1">
+        <span class="cs-strip-label">1P</span>
+        <div class="cs-strip-icons" id="csStripIconsP1"></div>
+      </div>
+      <!-- Filtro de saga -->
+      <div class="cs-saga-filter" id="csSagaFilter">
+        <button class="cs-saga-btn active" data-saga="all">TODOS</button>
+        <button class="cs-saga-btn" data-saga="saiyan">⚡ SAIYAJIN</button>
+        <button class="cs-saga-btn" data-saga="freeza">🌌 FREEZA</button>
+        <button class="cs-saga-btn" data-saga="android">🤖 ANDROIDE</button>
+        <button class="cs-saga-btn" data-saga="cell">🧬 CELL</button>
+        <button class="cs-saga-btn" data-saga="extra">✨ EXTRA</button>
+        <button class="cs-saga-btn" data-saga="movies">🎬 MOVIES</button>
+      </div>
+      <div class="cs-grid" id="csGrid"></div>
+      <div class="cs-icon-strip cs-strip-p2" id="csStripP2">
+        <span class="cs-strip-label">2P</span>
+        <div class="cs-strip-icons" id="csStripIconsP2"></div>
+      </div>
+    </div>
+
+    <!-- Preview P2 (direita) -->
+    <div class="cs-preview cs-preview-p2" id="csPreviewP2">
+      <div class="cs-player-tag">2P</div>
+      <div class="cs-char-name" id="csNameP2">—</div>
+      <div class="cs-char-art-wrap">
+        <div class="cs-char-sprite" id="csSpriteP2">
+          <div class="cs-sprite-placeholder">?</div>
+        </div>
+      </div>
+      <button class="cs-art-toggle" id="csToggleP2" title="Arte pixel" style="display:none">👾 PIXEL</button>
+      <div class="cs-char-stats" id="csStatsP2"></div>
+      <div class="cs-costumes" id="csCostumesP2"></div>
+    </div>
+
+  </div>
+  <div class="cs-footer">
+    <div class="cs-stage-select">
+      <span>ARENA:</span>
+      <button class="stage-prev" id="stagePrev">◀</button>
+      <span id="csStageLabel">Kame House</span>
+      <button class="stage-next" id="stageNext">▶</button>
+    </div>
+    <div class="cs-controls-hint">
+      <span>P1: WASD/Enter</span>
+      <span>P2: Setas/Numpad0</span>
+      <span>ESC: Voltar</span>
+    </div>
+    <button class="btn-start-fight" id="btnStartFight" disabled>LUTAR!</button>
+  </div>
+</div>
+
+<!-- BATTLE SCREEN -->
+<div id="screen-battle" class="screen">
+  <div class="hud-top">
+    <div class="hud-player hud-p1">
+      <div class="hud-name" id="hudNameP1">GOKU</div>
+      <div class="hud-hp-wrap">
+        <div class="hud-hp-bar" id="hudHpBarP1">
+          <!-- Camada vermelha: sempre cheia (base) -->
+          <div class="hp-layer hp-layer-red"></div>
+          <!-- Camada amarela: cobre os 66% superiores -->
+          <div class="hp-layer hp-layer-yellow" id="hudHpYellowP1"></div>
+          <!-- Camada verde: cobre os 33% superiores -->
+          <div class="hp-layer hp-layer-green" id="hudHpGreenP1"></div>
+        </div>
+        <div class="hud-hp-num" id="hudHpNumP1">1000</div>
+        <div class="hud-transform-indicator" id="hudTransformP1" style="display:none" title="[T] Transformar!">⚡ TRANSFORMAR</div>
+      </div>
+      <div class="hud-ki-wrap">
+        <div class="hud-ki-label">KI</div>
+        <div class="hud-ki-bar"><div class="hud-ki-fill" id="hudKiFillP1"></div></div>
+      </div>
+      <div class="hud-rounds" id="hudRoundsP1"></div>
+    </div>
+    <div class="hud-center">
+      <div class="hud-timer" id="hudTimer">60</div>
+      <div class="hud-round" id="hudRound">RD 1</div>
+    </div>
+      <div class="hud-player hud-p2">
+      <div class="hud-name" id="hudNameP2">VEGETA</div>
+      <div class="hud-hp-wrap">
+        <div class="hud-hp-bar" id="hudHpBarP2">
+          <!-- Camada vermelha: sempre cheia (base) -->
+          <div class="hp-layer hp-layer-red"></div>
+          <!-- Camada amarela: cobre os 66% superiores -->
+          <div class="hp-layer hp-layer-yellow hp-layer-p2" id="hudHpYellowP2"></div>
+          <!-- Camada verde: cobre os 33% superiores -->
+          <div class="hp-layer hp-layer-green hp-layer-p2" id="hudHpGreenP2"></div>
+        </div>
+        <div class="hud-hp-num" id="hudHpNumP2">1200</div>
+        <div class="hud-transform-indicator" id="hudTransformP2" style="display:none" title="[Num8] Transformar!">⚡ TRANSFORMAR</div>
+      </div>
+      <div class="hud-ki-wrap">
+        <div class="hud-ki-label">KI</div>
+        <div class="hud-ki-bar"><div class="hud-ki-fill hud-ki-fill-p2" id="hudKiFillP2"></div></div>
+      </div>
+      <div class="hud-rounds hud-rounds-p2" id="hudRoundsP2"></div>
+    </div>
+  </div>
+
+  <div class="arena-wrapper" id="arenaWrapper">
+    <canvas id="battleCanvas"></canvas>
+    <div class="vfx-layer" id="vfxLayer"></div>
+    <div class="clash-layer" id="clashLayer" style="display:none">
+      <div class="clash-inner">
+        <div class="clash-text">CLASH!</div>
+        <div class="clash-bar-wrap">
+          <div class="clash-bar-p1" id="clashBarP1" style="width:50%"></div>
+          <div class="clash-bar-center"></div>
+          <div class="clash-bar-p2" id="clashBarP2" style="width:50%"></div>
+        </div>
+        <div class="clash-hint">APERTE RÁPIDO!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialogue-box" id="dialogueBox" style="display:none">
+    <div class="dialogue-portrait" id="dialoguePortrait"></div>
+    <div class="dialogue-content">
+      <div class="dialogue-speaker" id="dialogueSpeaker"></div>
+      <div class="dialogue-text" id="dialogueText"></div>
+      <div class="dialogue-continue">▶ CONTINUAR</div>
+    </div>
+  </div>
+
+  <div class="narrator-box" id="narratorBox" style="display:none">
+    <div class="narrator-text" id="narratorText"></div>
+  </div>
+
+  <div class="round-announce" id="roundAnnounce" style="display:none">
+    <span id="roundAnnounceText">ROUND 1</span>
+  </div>
+  <div class="fight-announce" id="fightAnnounce" style="display:none">FIGHT!</div>
+  <div class="ko-announce" id="koAnnounce" style="display:none">K.O!</div>
+
+  <!-- Tag Team Bench HUD -->
+  <div class="bench-hud bench-hud-p1" id="benchHUD_wrap_p1" style="display:none">
+    <div class="tag-cooldown-label" id="tagCooldown_p1">TAG [Q]</div>
+    <div class="bench-slots" id="benchHUD_p1"></div>
+  </div>
+  <div class="bench-hud bench-hud-p2" id="benchHUD_wrap_p2" style="display:none">
+    <div class="tag-cooldown-label" id="tagCooldown_p2">TAG [9]</div>
+    <div class="bench-slots" id="benchHUD_p2"></div>
+  </div>
+
+  <div class="result-screen" id="resultScreen" style="display:none">
+    <div class="result-winner-label">VENCEDOR</div>
+    <div class="result-winner-name" id="resultWinnerName"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="result-actions">
+      <button class="btn-result" id="btnResultRematch">REVANCHE</button>
+      <button class="btn-result" id="btnResultMenu">MENU</button>
+      <button class="btn-result" id="btnResultNext" style="display:none">PRÓXIMO ▶</button>
+    </div>
+  </div>
+
+  <div class="pause-menu" id="pauseMenu" style="display:none">
+    <div class="pause-title">PAUSA</div>
+    <button class="pause-btn" id="pauseResume">CONTINUAR</button>
+    <button class="pause-btn" id="pauseRestart">REINICIAR</button>
+    <button class="pause-btn" id="pauseToMenu">MENU PRINCIPAL</button>
+  </div>
+
+  <div class="controls-overlay">
+    <b>P1:</b> A/D mov · W bloquear · S carregar · J soco · K chute · L ki · U especial<br>
+    <b>P2:</b> ←/→ mov · ↑ bloquear · ↓ carregar · Num4 soco · Num5 chute · Num6 ki · Num7 esp<br>
+    <b>ESC</b> pausar
+  </div>
+</div>
+
+<!-- Z-CANON -->
+<div id="screen-zcanon" class="screen">
+  <div class="saga-bg"></div>
+  <div class="saga-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1 class="saga-title">Z-CANON</h1>
+    <div class="saga-tabs">
+      <button class="saga-tab active" data-saga="saiyan">⚡ SAGA SAIYAJIN</button>
+      <button class="saga-tab" data-saga="freeza">🌌 SAGA FREEZA</button>
+      <button class="saga-tab" data-saga="android">🤖 SAGA ANDROIDE</button>
+      <button class="saga-tab" data-saga="cell">🧬 SAGA CELL</button>
+    </div>
+  </div>
+  <div class="chapters-container" id="chaptersContainer"></div>
+</div>
+
+<!-- TAG TEAM vs CPU -->
+<div id="screen-versus" class="screen">
+  <div class="vs-bg"></div>
+  <div class="vs-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>🔀 TAG TEAM vs CPU</h1>
+    <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:0">Monte seu time personalizado e enfrente a CPU!</p>
+  </div>
+  <div class="vs-body">
+    <div class="vs-section">
+      <div class="vs-section-label">TAMANHO DOS TIMES (1–6 por lado)</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:8px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <span style="color:#88ccff;font-size:0.85rem;font-weight:bold">SEU TIME (P1)</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="vs-size-btn" id="vsP1SizeMinus">−</button>
+            <input id="vsP1SizeInput" type="number" min="1" max="6" value="2" style="width:56px;text-align:center;font-size:1.4rem;font-weight:bold;background:#1a1a2e;color:#fff;border:2px solid #4466cc;border-radius:8px;padding:4px">
+            <button class="vs-size-btn" id="vsP1SizePlus">+</button>
+          </div>
+        </div>
+        <div style="font-size:2rem;font-weight:bold;color:#ffee00" id="vsTagLabel">2v2</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+          <span style="color:#ff8888;font-size:0.85rem;font-weight:bold">TIME CPU (P2)</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="vs-size-btn" id="vsP2SizeMinus">−</button>
+            <input id="vsP2SizeInput" type="number" min="1" max="6" value="2" style="width:56px;text-align:center;font-size:1.4rem;font-weight:bold;background:#1a1a2e;color:#fff;border:2px solid #cc4444;border-radius:8px;padding:4px">
+            <button class="vs-size-btn" id="vsP2SizePlus">+</button>
+          </div>
+        </div>
+      </div>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.78rem;margin-top:8px;text-align:center">Exemplo: 3v6, 1v4, 5v2 — qualquer combinação!</p>
+    </div>
+    <div class="vs-section">
+      <div class="vs-section-label">DIFICULDADE</div>
+      <div class="vs-mode-select">
+        <button class="vs-diff-btn" data-diff="easy">😌 Fácil</button>
+        <button class="vs-diff-btn active" data-diff="medium">⚔ Médio</button>
+        <button class="vs-diff-btn" data-diff="hard">💀 Difícil</button>
+        <button class="vs-diff-btn" data-diff="veryhard">☠ Lendário</button>
+      </div>
+    </div>
+    <div class="vs-section">
+      <div class="vs-section-label">TEMPO</div>
+      <div class="vs-mode-select">
+        <button class="vs-timer-btn active" data-timer="60">⏱ 60s</button>
+        <button class="vs-timer-btn" data-timer="99">⏱ 99s</button>
+        <button class="vs-timer-btn" data-timer="0">♾ SEM LIMITE</button>
+      </div>
+    </div>
+    <div class="vs-section">
+      <div class="vs-section-label">ROUNDS</div>
+      <div class="vs-mode-select">
+        <button class="vs-rounds-btn active" data-rounds="2">🥊 Melhor de 3</button>
+        <button class="vs-rounds-btn" data-rounds="3">🥊 Melhor de 5</button>
+        <button class="vs-rounds-btn" data-rounds="1">⚡ 1 Round</button>
+      </div>
+    </div>
+    <div class="vs-hint-box">
+      <strong>🎮 Controles do TAG:</strong> Pressione <kbd>Q</kbd> para trocar de personagem!<br>
+      Você escolhe <strong>todos</strong> os personagens do seu time. A CPU escolhe os dela aleatoriamente.
+    </div>
+    <button class="btn-big" id="btnVersusGo">SELECIONAR TIME →</button>
+  </div>
+</div>
+
+<!-- 1v1 vs CPU -->
+<div id="screen-vscpu1v1" class="screen">
+  <div class="vs-bg"></div>
+  <div class="vs-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>🤖 1v1 vs CPU</h1>
+    <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:0">Você escolhe seu personagem e enfrenta a CPU!</p>
+  </div>
+  <div class="vs-body">
+    <div class="vs-section">
+      <div class="vs-section-label">DIFICULDADE</div>
+      <div class="vs-mode-select">
+        <button class="cpu1v1-diff-btn" data-diff="easy">😌 Fácil</button>
+        <button class="cpu1v1-diff-btn active" data-diff="medium">⚔ Médio</button>
+        <button class="cpu1v1-diff-btn" data-diff="hard">💀 Difícil</button>
+        <button class="cpu1v1-diff-btn" data-diff="veryhard">☠ Lendário</button>
+      </div>
+    </div>
+    <div class="vs-section">
+      <div class="vs-section-label">TEMPO</div>
+      <div class="vs-mode-select">
+        <button class="cpu1v1-timer-btn active" data-timer="60">⏱ 60s</button>
+        <button class="cpu1v1-timer-btn" data-timer="99">⏱ 99s</button>
+        <button class="cpu1v1-timer-btn" data-timer="0">♾ SEM LIMITE</button>
+      </div>
+    </div>
+    <div class="vs-section">
+      <div class="vs-section-label">ROUNDS</div>
+      <div class="vs-mode-select">
+        <button class="cpu1v1-rounds-btn active" data-rounds="2">🥊 Melhor de 3</button>
+        <button class="cpu1v1-rounds-btn" data-rounds="3">🥊 Melhor de 5</button>
+        <button class="cpu1v1-rounds-btn" data-rounds="1">⚡ 1 Round</button>
+      </div>
+    </div>
+    <div class="vs-hint-box">
+      <strong>ℹ️ Como funciona:</strong> Você escolhe <strong>apenas seu personagem</strong>.<br>
+      A CPU escolhe um oponente aleatório para enfrentar você!
+    </div>
+    <button class="btn-big" id="btnVsCpu1v1Go">ESCOLHER PERSONAGEM →</button>
+  </div>
+</div>
+
+<!-- PVP LOCAL -->
+<div id="screen-pvplocal" class="screen">
+  <div class="vs-bg"></div>
+  <div class="vs-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>⚔ PVP LOCAL</h1>
+    <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin:0">Duelo entre dois jogadores no mesmo teclado</p>
+
+  </div>
+  <div class="vs-body">
+    <div class="vs-section">
+      <div class="vs-section-label">TEMPO</div>
+      <div class="vs-mode-select">
+        <button class="pvp-timer-btn active" data-timer="60">⏱ 60s</button>
+        <button class="pvp-timer-btn" data-timer="99">⏱ 99s</button>
+        <button class="pvp-timer-btn" data-timer="0">♾ SEM LIMITE</button>
+      </div>
+    </div>
+    <div class="vs-section">
+      <div class="vs-section-label">ROUNDS</div>
+      <div class="vs-mode-select">
+        <button class="pvp-rounds-btn active" data-rounds="2">🥊 Melhor de 3</button>
+        <button class="pvp-rounds-btn" data-rounds="3">🥊 Melhor de 5</button>
+        <button class="pvp-rounds-btn" data-rounds="1">⚡ 1 Round</button>
+      </div>
+    </div>
+    <div class="vs-hint-box">
+      <strong>🎮 Controles P1:</strong> A/D mover · W bloquear · S carregar ki · J soco · K chute · L ki blast · U ultimate · T transformar<br>
+      <strong>🎮 Controles P2:</strong> ←/→ mover · ↑ bloquear · ↓ carregar ki · 4 soco · 5 chute · 6 ki blast · 7 ultimate · 8 transformar
+    </div>
+    <button class="btn-big" id="btnPvpGo">SELECIONAR PERSONAGENS →</button>
+  </div>
+</div>
+
+<!-- Z-TIME BREAK -->
+<div id="screen-ztimebreak" class="screen">
+  <div class="ztb-bg"></div>
+  <div class="ztb-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>Z-TIME BREAK</h1>
+    <p>Histórias Alternativas — O que teria acontecido se...</p>
+  </div>
+  <div class="zp-tabs" id="ztbTabs">
+    <button class="zp-tab active" data-tab="all">TODOS</button>
+    <button class="zp-tab" data-tab="saiyan">⚡ Saiyajin</button>
+    <button class="zp-tab" data-tab="freeza">🌌 Freeza</button>
+    <button class="zp-tab" data-tab="android">🤖 Androide</button>
+    <button class="zp-tab" data-tab="movies">🎬 Movies</button>
+  </div>
+  <div class="whatif-list" id="whatifList"></div>
+</div>
+
+<!-- TRAINING -->
+<div id="screen-training" class="screen">
+  <div class="train-bg"></div>
+  <div class="train-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>TRAINING</h1>
+  </div>
+  <div class="train-options">
+    <button class="train-btn" id="btnTutorial">📖 TUTORIAL<br><small>Aprenda os controles</small></button>
+    <button class="train-btn" id="btnFreeTraining">🥊 TREINO LIVRE<br><small>Pratique sem limites</small></button>
+  </div>
+  <div class="tutorial-content" id="tutorialContent" style="display:none">
+    <div class="tutorial-card"><h3>MOVIMENTO</h3><p><span class="tutorial-key">A</span> / <span class="tutorial-key">D</span> Mover · <span class="tutorial-key">W</span> Bloquear · <span class="tutorial-key">S</span> Carregar Ki</p></div>
+    <div class="tutorial-card"><h3>ATAQUES P1</h3><p><span class="tutorial-key">J</span> Soco · <span class="tutorial-key">K</span> Chute · <span class="tutorial-key">L</span> Ki Blast · <span class="tutorial-key">U</span> Especial · <span class="tutorial-key">T</span> Transformar</p></div>
+    <div class="tutorial-card"><h3>ATAQUES P2</h3><p><span class="tutorial-key">Num4</span> Soco · <span class="tutorial-key">Num5</span> Chute · <span class="tutorial-key">Num6</span> Ki · <span class="tutorial-key">Num7</span> Especial · <span class="tutorial-key">Num8</span> Transformar</p></div>
+    <div class="tutorial-card"><h3>HP — 3 BARRAS</h3><p>🟢 Barra 1 (100%→66%) · 🟡 Barra 2 (66%→33%) · 🔴 Barra 3 (33%→0%). Cada cor representa um estágio de vida!</p></div>
+    <div class="tutorial-card"><h3>TRANSFORMAÇÃO ⚡</h3><p>Encha o Ki ao máximo e pressione <span class="tutorial-key">T</span> para transformar! Uma animação de 3s toca antes da transformação.</p></div>
+    <div class="tutorial-card"><h3>CLASH!</h3><p>Quando dois Ki Blasts se encontram, pressione rapidamente qualquer ataque para ganhar o clash!</p></div>
+    <button class="btn-big" id="btnCloseTutorial" style="margin-top:16px">ENTENDIDO!</button>
+  </div>
+</div>
+
+<!-- WORLD TOURNAMENT -->
+<div id="screen-tournament" class="screen">
+  <div class="tourney-bg"></div>
+  <div class="tourney-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>WORLD TOURNAMENT</h1>
+    <p>Torneio com chaves — derrote todos para ser campeão!</p>
+  </div>
+  <div id="tourneySetup" class="tourney-setup">
+    <div class="tourney-size-select">
+      <div class="vs-section-label">TAMANHO DO TORNEIO</div>
+      <div class="vs-mode-select">
+        <button class="tourney-size-btn active" data-size="4">4 lutadores</button>
+        <button class="tourney-size-btn" data-size="8">8 lutadores</button>
+      </div>
+    </div>
+    <button class="btn-big" id="btnStartTourney">INICIAR TORNEIO →</button>
+  </div>
+  <div id="tourneyBracket" class="tourney-bracket" style="display:none"></div>
+</div>
+
+<!-- Z-PARALLEL -->
+<div id="screen-zparallel" class="screen">
+  <div class="zp-bg"></div>
+  <div class="zp-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>Z-PARALLEL</h1>
+    <div class="zp-zeni-display">💰 <span id="zpZeniCount">0</span> Zeni</div>
+  </div>
+  <div class="zp-tabs">
+    <button class="zp-tab active" data-tab="all">⭐ TODOS</button>
+    <button class="zp-tab" data-tab="saiyan">⚡ Saiyajin</button>
+    <button class="zp-tab" data-tab="freeza">🌌 Freeza</button>
+    <button class="zp-tab" data-tab="android">🤖 Androide</button>
+    <button class="zp-tab" data-tab="movies">🎬 Movies</button>
+  </div>
+  <div class="zp-missions" id="zpMissions"></div>
+</div>
+
+<!-- LOJA -->
+<div id="screen-shop" class="screen">
+  <div class="shop-bg"></div>
+  <div class="shop-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>🏪 LOJA</h1>
+    <div class="shop-zeni-display">💰 <span id="shopZeniCount">0</span> Zeni</div>
+  </div>
+  <div class="shop-tabs">
+    <button class="shop-tab active" data-tab="chars">👤 Personagens</button>
+    <button class="shop-tab" data-tab="costumes">👘 Trajes</button>
+  </div>
+  <div class="shop-grid" id="shopGrid"></div>
+</div>
+
+<!-- CONFIGURAÇÕES -->
+<div id="screen-settings" class="screen">
+  <div class="settings-bg"></div>
+  <div class="settings-header">
+    <button class="back-btn" data-back="mainmenu">← VOLTAR</button>
+    <h1>⚙ CONFIGURAÇÕES</h1>
+  </div>
+  <div class="settings-body">
+    <div class="settings-item">
+      <span class="settings-label">🔊 Música</span>
+      <button class="settings-toggle" id="btnToggleMusic">LIGADA</button>
+    </div>
+    <div class="settings-item">
+      <span class="settings-label">💰 Zeni atual</span>
+      <span class="settings-value" id="settingsZeni">0</span>
+    </div>
+    <div class="settings-item">
+      <span class="settings-label">📖 Capítulos completos</span>
+      <span class="settings-value" id="settingsChapters">0</span>
+    </div>
+    <div class="settings-item">
+      <span class="settings-label">👤 Personagens desbloqueados</span>
+      <span class="settings-value" id="settingsChars">0</span>
+    </div>
+    <div class="settings-item danger-zone">
+      <span class="settings-label">⚠ ZERAR JOGO</span>
+      <button class="settings-btn-danger" id="btnResetGame">COMEÇAR DO ZERO</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none">
+  <div class="loading-dragon">🐉</div>
+  <div class="loading-text" id="loadingText">CARREGANDO...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+</div>
+
+<!-- UNLOCK NOTIFICATION -->
+<div class="unlock-notif" id="unlockNotif" style="display:none">
+  <div class="unlock-icon">🔓</div>
+  <div class="unlock-content">
+    <div class="unlock-label">DESBLOQUEADO!</div>
+    <div class="unlock-name" id="unlockName"></div>
+  </div>
+</div>
+
+<!-- DATA -->
+<script src="js/data/characters.js"></script>
+<script src="js/data/stages.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/data/whatifs.js"></script>
+<script src="js/data/missions.js"></script>
+
+<!-- MANAGERS -->
+<script src="js/managers/saveManager.js"></script>
+<script src="js/managers/screenManager.js"></script>
+
+<!-- BATTLE ENGINE -->
+<script src="js/battle/battleEngine.js"></script>
+
+
+<!-- DRAGON BALL HUD -->
+<div class="db-hud-bar" id="dbHudBar" title="Clique para invocar Shenlong!" style="display:none">
+  <div class="db-hud-ball empty" id="dbBall1">★</div>
+  <div class="db-hud-ball empty" id="dbBall2">★★</div>
+  <div class="db-hud-ball empty" id="dbBall3">★★★</div>
+  <div class="db-hud-ball empty" id="dbBall4">★★★★</div>
+  <div class="db-hud-ball empty" id="dbBall5">★★★★★</div>
+  <div class="db-hud-ball empty" id="dbBall6">★★★★★★</div>
+  <div class="db-hud-ball empty" id="dbBall7">★★★★★★★</div>
+  <span class="db-hud-label" id="dbHudLabel">0/7</span>
+</div>
+
+<!-- SHENLONG MODAL -->
+<div id="shenlong-modal">
+  <div class="shenlong-container">
+    <div class="shenlong-emoji">🐉</div>
+    <div class="shenlong-title">SHENLONG</div>
+    <div class="shenlong-subtitle">As 7 Esferas do Dragão foram reunidas!</div>
+    <div class="shenlong-balls-display" id="shenlongBallsDisplay"></div>
+    <p style="font-family:'Orbitron',sans-serif;font-size:0.78rem;color:rgba(255,220,150,0.7);margin:0 0 18px;letter-spacing:0.05em">
+      Seu desejo foi concedido, mortal. O que você deseja?
+    </p>
+    <div class="shenlong-result" id="shenlongResult"></div>
+    <div class="shenlong-wishes" id="shenlongWishes">
+      <button class="shenlong-wish-btn" data-wish="zeni">💰 Eu quero riqueza! <small style="float:right;opacity:0.6">+5.000 Zeni</small></button>
+      <button class="shenlong-wish-btn" data-wish="bigzeni">💎 Eu quero MUITA riqueza! <small style="float:right;opacity:0.6">+15.000 Zeni</small></button>
+      <button class="shenlong-wish-btn" data-wish="character">👤 Eu quero um guerreiro lendário! <small style="float:right;opacity:0.6">Personagem aleatório</small></button>
+      <button class="shenlong-wish-btn" data-wish="dragonball">⭐ Devolva as esferas mais rápido! <small style="float:right;opacity:0.6">+20% chance por batalha</small></button>
+      <button class="shenlong-wish-btn" data-wish="chapter">📖 Revele um segredo! <small style="float:right;opacity:0.6">Desbloqueia um capítulo</small></button>
+    </div>
+    <button class="shenlong-close" id="shenlongClose">Dispensar o Dragão</button>
+  </div>
+</div>
+
+<!-- MODES -->
+<script src="js/modes/charSelect.js"></script>
+<script src="js/modes/zcanon.js"></script>
+<script src="js/modes/versus.js"></script>
+
+<!-- UI -->
+<script src="js/ui/splash.js"></script>
+<script src="js/ui/shenlong.js"></script>
+
+<!-- MAIN -->
+<script src="main.js"></script>
+</body>
+</html>
